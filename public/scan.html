@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analyzing your website — SiteFix AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="26" height="26">
+          <path d="M16 3 L28 9 V17 C28 23.5 22.6 28.4 16 30 C9.4 28.4 4 23.5 4 17 V9 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M11 16.5 L14.5 20 L21.5 12.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="brand-name">SiteFix<span class="brand-accent">AI</span></span>
+    </a>
+    <div class="header-actions">
+      <a class="btn btn-ghost" href="dashboard.html">Log in</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="scan-page">
+    <div class="shell shell--narrow">
+
+      <!-- Working state: shown while a scan is in progress -->
+      <section class="scan-card" id="scanWorking" hidden>
+        <p class="scan-eyebrow">
+          <span class="scan-pulse" aria-hidden="true"></span>
+          Live audit in progress
+        </p>
+        <h1>Analyzing your website</h1>
+        <p class="scan-sub">Sit tight — this usually takes under a minute.</p>
+
+        <div class="scan-url-chip">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 3 3 7v6c0 4.6 3.4 8.4 9 10 5.6-1.6 9-5.4 9-10V7l-9-4Z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span id="scanTargetUrl">—</span>
+        </div>
+
+        <div class="scan-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="scanProgressBar" aria-label="Audit progress">
+          <div class="scan-progress__track">
+            <div class="scan-progress__fill" id="scanProgressFill"></div>
+          </div>
+          <span class="scan-progress__pct" id="scanProgressPct">0%</span>
+        </div>
+
+        <ol class="scan-steps" id="scanSteps">
+          <li class="scan-step" data-step="connect">
+            <span class="scan-step__icon" aria-hidden="true"></span>
+            <span class="scan-step__label">Connecting to website</span>
+          </li>
+          <li class="scan-step" data-step="structure">
+            <span class="scan-step__icon" aria-hidden="true"></span>
+            <span class="scan-step__label">Analyzing page structure</span>
+          </li>
+          <li class="scan-step" data-step="seo">
+            <span class="scan-step__icon" aria-hidden="true"></span>
+            <span class="scan-step__label">Checking SEO</span>
+          </li>
+          <li class="scan-step" data-step="performance">
+            <span class="scan-step__icon" aria-hidden="true"></span>
+            <span class="scan-step__label">Checking performance</span>
+          </li>
+          <li class="scan-step" data-step="mobile">
+            <span class="scan-step__icon" aria-hidden="true"></span>
+            <span class="scan-step__label">Checking mobile experience</span>
+          </li>
+          <li class="scan-step" data-step="accessibility">
+            <span class="scan-step__icon" aria-hidden="true"></span>
+            <span class="scan-step__label">Checking accessibility</span>
+          </li>
+          <li class="scan-step" data-step="content">
+            <span class="scan-step__icon" aria-hidden="true"></span>
+            <span class="scan-step__label">Analyzing content</span>
+          </li>
+          <li class="scan-step" data-step="conversion">
+            <span class="scan-step__icon" aria-hidden="true"></span>
+            <span class="scan-step__label">Checking conversion elements</span>
+          </li>
+          <li class="scan-step" data-step="ai_recommendations">
+            <span class="scan-step__icon" aria-hidden="true"></span>
+            <span class="scan-step__label">Preparing AI recommendations</span>
+          </li>
+        </ol>
+
+        <p class="scan-footnote">This progress view is a visual guide to what SiteFix AI checks — the scanning engine itself is still being built (see the project README).</p>
+      </section>
+
+      <!-- Error state: shown for a missing/invalid URL, or if the backend call fails -->
+      <section class="scan-card" id="scanError" hidden>
+        <p class="scan-eyebrow scan-eyebrow--error">
+          <span class="scan-pulse scan-pulse--error" aria-hidden="true"></span>
+          Couldn't start this scan
+        </p>
+        <h1 id="scanErrorTitle">We couldn't start your audit</h1>
+        <p class="scan-sub" id="scanErrorMessage" role="alert">Something went wrong before scanning could begin.</p>
+        <a class="btn btn-primary" href="index.html">Back to homepage</a>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<script src="js/scan.js"></script>
+</body>
+</html>

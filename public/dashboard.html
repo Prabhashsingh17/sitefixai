@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit Dashboard — SiteFix AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="26" height="26">
+          <path d="M16 3 L28 9 V17 C28 23.5 22.6 28.4 16 30 C9.4 28.4 4 23.5 4 17 V9 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M11 16.5 L14.5 20 L21.5 12.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="brand-name">SiteFix<span class="brand-accent">AI</span></span>
+    </a>
+    <div class="header-actions">
+      <a class="btn btn-ghost" href="index.html">Home</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="dash-page">
+    <div class="shell">
+
+      <!-- LOADING STATE -->
+      <section class="placeholder-page" id="dashLoading">
+        <div class="placeholder-card">
+          <span class="status-pill"><span class="dot"></span> Loading</span>
+          <h1>Getting your results ready</h1>
+          <p id="dashLoadingText" role="status" aria-live="polite">Fetching your audit…</p>
+        </div>
+      </section>
+
+      <!-- EMPTY STATE (no scanId in the URL) -->
+      <section class="placeholder-page" id="dashEmpty" hidden>
+        <div class="placeholder-card">
+          <span class="status-pill"><span class="dot"></span> No audit selected</span>
+          <h1>No audit to show yet</h1>
+          <p>Run a free audit from the homepage to see your dashboard here.</p>
+          <a class="btn btn-primary" href="index.html">Run a free audit</a>
+        </div>
+      </section>
+
+      <!-- ERROR STATE -->
+      <section class="placeholder-page" id="dashError" hidden>
+        <div class="placeholder-card">
+          <span class="status-pill status-pill--error"><span class="dot"></span> Something went wrong</span>
+          <h1 id="dashErrorTitle">We couldn't load this audit</h1>
+          <p id="dashErrorMessage" role="alert">An unexpected error occurred.</p>
+          <div class="placeholder-card__actions">
+            <button class="btn btn-ghost" id="dashRetryBtn" type="button">Try again</button>
+            <a class="btn btn-primary" href="index.html">Run a new audit</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAIN DASHBOARD CONTENT -->
+      <div id="dashContent" hidden>
+
+        <!-- Top bar -->
+        <div class="dash-topbar">
+          <div class="dash-topbar__info">
+            <p class="dash-topbar__label">Audit results for</p>
+            <h1 class="dash-topbar__url" id="dashUrl">—</h1>
+            <p class="dash-topbar__date" id="dashDate">—</p>
+          </div>
+          <div class="dash-topbar__actions">
+            <a class="btn btn-ghost" href="index.html">New Audit</a>
+            <button class="btn btn-primary" id="generateReportBtn" type="button">Generate Report</button>
+          </div>
+        </div>
+
+        <!-- Hero score -->
+        <section class="dash-hero">
+          <div class="dash-hero__score">
+            <svg viewBox="0 0 160 160" class="score-ring" id="scoreRingSvg">
+              <circle cx="80" cy="80" r="70" class="score-ring__track"/>
+              <circle cx="80" cy="80" r="70" class="score-ring__value" id="scoreRingValue"/>
+            </svg>
+            <div class="score-ring__label">
+              <span class="score-ring__num" id="overallScoreNum">–</span>
+              <span class="score-ring__den">/100</span>
+            </div>
+          </div>
+
+          <div class="dash-hero__summary">
+            <p class="dash-hero__eyebrow">
+              Summary
+              <span class="badge-soon">AI-generated insights coming soon</span>
+            </p>
+            <p class="dash-hero__text" id="dashSummaryText">—</p>
+
+            <div class="dash-hero__stats">
+              <div class="dash-stat dash-stat--critical">
+                <strong id="statCritical">0</strong>
+                <span>Critical</span>
+              </div>
+              <div class="dash-stat dash-stat--warning">
+                <strong id="statWarning">0</strong>
+                <span>Warnings</span>
+              </div>
+              <div class="dash-stat dash-stat--info">
+                <strong id="statInfo">0</strong>
+                <span>Suggestions</span>
+              </div>
+              <div class="dash-stat dash-stat--good">
+                <strong id="statGood">0</strong>
+                <span>Passed</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Category score cards -->
+        <section class="dash-section">
+          <h2 class="dash-section__heading">Scores by category</h2>
+          <div class="dash-categories" id="categoryCards"><!-- populated by dashboard.js --></div>
+        </section>
+
+        <!-- Findings -->
+        <section class="dash-section">
+          <div class="findings-toolbar">
+            <div class="findings-tabs" role="tablist" aria-label="Filter findings by severity" id="findingsTabs">
+              <button class="findings-tab is-active" data-filter="all" role="tab" aria-selected="true">All</button>
+              <button class="findings-tab" data-filter="critical" role="tab" aria-selected="false">Critical</button>
+              <button class="findings-tab" data-filter="warning" role="tab" aria-selected="false">Warnings</button>
+              <button class="findings-tab" data-filter="info" role="tab" aria-selected="false">Suggestions</button>
+              <button class="findings-tab" data-filter="good" role="tab" aria-selected="false">Good</button>
+            </div>
+            <div class="findings-sort">
+              <label for="findingsSort">Sort by</label>
+              <select id="findingsSort">
+                <option value="severity">Severity</option>
+                <option value="category">Category</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="findings-list" id="findingsList"><!-- populated by dashboard.js --></div>
+          <p class="findings-empty" id="findingsEmpty" hidden>No findings match this filter.</p>
+        </section>
+
+      </div>
+
+      <!-- RECENT AUDITS -- always available (loads independently of the
+           current scanId's state), positioned last so it reads as "see also"
+           rather than competing with either the empty-state CTA above or a
+           specific audit's own results for top billing. -->
+      <section class="recent-audits" id="recentAuditsSection" hidden>
+        <h2 class="recent-audits__title">Recent Audits</h2>
+        <div class="recent-audits__list" id="recentAuditsList"><!-- populated by dashboard.js --></div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<!-- Fix with AI modal -->
+<div class="fix-overlay" id="fixOverlay" hidden>
+  <div class="fix-modal" id="fixModal" role="dialog" aria-modal="true" aria-labelledby="fixModalTitle">
+    <div class="fix-modal__header">
+      <div>
+        <p class="fix-modal__eyebrow">Fix with AI</p>
+        <h2 class="fix-modal__title" id="fixModalTitle">—</h2>
+      </div>
+      <button class="fix-modal__close" id="fixModalClose" type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div class="fix-modal__body">
+
+      <!-- 1. Detected problem -->
+      <section class="fix-block">
+        <h3 class="fix-block__label">Detected problem</h3>
+        <p class="fix-block__text" id="fixProblemText">—</p>
+        <p class="fix-block__meta" id="fixEvidenceText"></p>
+      </section>
+
+      <!-- Fix type selector (lets the user pick a different fix type, then Regenerate) -->
+      <section class="fix-block fix-type-row">
+        <label for="fixTypeSelect" class="fix-block__label">Fix type</label>
+        <select id="fixTypeSelect" class="fix-type-select"><!-- populated by dashboard.js --></select>
+      </section>
+
+      <!-- 2. Current content/code, where applicable -->
+      <section class="fix-block" id="fixCurrentSection" hidden>
+        <h3 class="fix-block__label">Current content</h3>
+        <pre class="fix-code-block" id="fixCurrentValue"></pre>
+      </section>
+
+      <!-- Loading state -->
+      <div class="fix-state" id="fixLoading" hidden>
+        <span class="fix-spinner" aria-hidden="true"></span>
+        <p>Generating a suggestion…</p>
+      </div>
+
+      <!-- Error state -->
+      <div class="fix-state fix-state--error" id="fixError" hidden>
+        <p id="fixErrorMessage" role="alert">Something went wrong.</p>
+        <button class="btn btn-ghost btn-small" id="fixRetryBtn" type="button">Try again</button>
+      </div>
+
+      <!-- Success state: explanation + proposed fix -->
+      <div id="fixResult" hidden>
+
+        <!-- 3. AI explanation -->
+        <section class="fix-block">
+          <h3 class="fix-block__label">AI explanation</h3>
+          <p class="fix-block__text" id="fixReasonText">—</p>
+        </section>
+
+        <!-- 4. Proposed fix -->
+        <section class="fix-block">
+          <h3 class="fix-block__label">Proposed fix</h3>
+          <pre class="fix-code-block fix-code-block--proposed" id="fixImprovedValue"></pre>
+
+          <!-- 5 & 6. Copy + Regenerate -->
+          <div class="fix-actions-row">
+            <button class="btn btn-primary btn-small" id="fixCopyBtn" type="button">Copy</button>
+            <button class="btn btn-ghost btn-small" id="fixRegenerateBtn" type="button">Regenerate</button>
+          </div>
+        </section>
+
+        <section class="fix-block" id="fixAlternativesSection" hidden>
+          <h3 class="fix-block__label">Alternatives</h3>
+          <ul class="fix-alternatives" id="fixAlternativesList"><!-- populated by dashboard.js --></ul>
+        </section>
+
+        <p class="fix-disclaimer" id="fixDisclaimerText"></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/dashboard.js"></script>
+</body>
+</html>

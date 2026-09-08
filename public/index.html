@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SiteFix AI — Find What's Wrong With Your Website. Get Fixes You Can Use Today.</title>
+<meta name="description" content="Free website audit that finds what's actually costing you visitors and sales — then gives you clear, specific fixes. Built for small businesses, freelancers and agencies.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="top">
+  <div class="shell header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="26" height="26">
+          <path d="M16 3 L28 9 V17 C28 23.5 22.6 28.4 16 30 C9.4 28.4 4 23.5 4 17 V9 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M11 16.5 L14.5 20 L21.5 12.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="brand-name">SiteFix<span class="brand-accent">AI</span></span>
+    </a>
+
+    <nav class="main-nav" id="main-nav" aria-label="Primary">
+      <a href="#benefits">Benefits</a>
+      <a href="#sample-report">Sample audit</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="btn btn-ghost" href="dashboard.html">Log in</a>
+      <a class="btn btn-primary btn-small" href="#audit-form">Get my free audit</a>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero" id="audit-form">
+    <div class="shell hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">Free website audit — results in about 60 seconds</p>
+        <h1>Find what's wrong with your website. Get fixes you can actually use.</h1>
+        <p class="hero-subtitle">SiteFix AI scans your site, finds the problems that are quietly costing you visitors and sales, and hands you clear, specific fixes — not another jargon-filled report.</p>
+
+        <form class="audit-form" id="auditForm" action="scan.html" method="get" novalidate>
+          <div class="audit-field">
+            <label for="siteUrl" class="visually-hidden">Website URL</label>
+            <input
+              type="text"
+              id="siteUrl"
+              name="url"
+              inputmode="url"
+              autocomplete="url"
+              placeholder="https://yourwebsite.com"
+              aria-describedby="urlError"
+            >
+            <button type="submit" class="btn btn-primary" id="auditSubmit">
+              Get my free audit
+            </button>
+          </div>
+          <p class="field-error" id="urlError" role="alert" hidden>
+            Enter a valid website address starting with http:// or https://
+          </p>
+        </form>
+
+        <ul class="trust-strip">
+          <li>No credit card needed</li>
+          <li>No install or tracking script</li>
+          <li>Plain-English results</li>
+        </ul>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="scan-panel">
+          <div class="scan-panel__bar">
+            <span class="dot dot--critical"></span>
+            <span class="dot dot--warn"></span>
+            <span class="dot dot--ok"></span>
+            <span class="scan-panel__url">yourwebsite.com</span>
+          </div>
+          <div class="scan-panel__body">
+            <div class="scan-beam"></div>
+
+            <div class="scan-score">
+              <svg viewBox="0 0 120 120" class="scan-score__ring">
+                <circle cx="60" cy="60" r="52" class="ring-track"/>
+                <circle cx="60" cy="60" r="52" class="ring-value"/>
+              </svg>
+              <div class="scan-score__label">
+                <span class="scan-score__num">62</span>
+                <span class="scan-score__den">/100</span>
+              </div>
+            </div>
+
+            <ul class="scan-findings">
+              <li class="finding finding--critical">
+                <span class="finding__tag">Critical</span>
+                <span class="finding__text">Largest Contentful Paint is 4.2s</span>
+              </li>
+              <li class="finding finding--warn">
+                <span class="finding__tag">Warning</span>
+                <span class="finding__text">Missing meta description on 6 pages</span>
+              </li>
+              <li class="finding finding--ok">
+                <span class="finding__tag">Passed</span>
+                <span class="finding__text">Mobile viewport configured correctly</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO IT'S FOR -->
+  <section class="section section--tight">
+    <div class="shell">
+      <div class="section-head">
+        <h2>Built for the people who actually run websites</h2>
+        <p>Not a tool for enterprise SEO teams — a tool for the person who has to fix the site themselves.</p>
+      </div>
+
+      <div class="audience-grid">
+        <div class="audience-card">
+          <h3>Small business owners</h3>
+          <p>Know exactly what's costing you customers, without paying an agency just to find out.</p>
+        </div>
+        <div class="audience-card">
+          <h3>Freelancers</h3>
+          <p>Hand clients a professional-looking audit and a clear list of fixes, without buying an expensive toolkit.</p>
+        </div>
+        <div class="audience-card">
+          <h3>Agencies</h3>
+          <p>Turn a first-call website review into a polished report in minutes instead of an afternoon.</p>
+        </div>
+        <div class="audience-card">
+          <h3>Website owners</h3>
+          <p>Catch the problems quietly pushing visitors away, before they show up as a traffic or sales drop.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAMPLE REPORT -->
+  <section class="section section--alt" id="sample-report">
+    <div class="shell">
+      <div class="section-head">
+        <h2>Here's what you get back</h2>
+        <p>An example audit, so you know exactly what to expect before you run your own. Your real results will reflect your actual site.</p>
+      </div>
+
+      <div class="sample-report">
+        <div class="sample-report__score">
+          <svg viewBox="0 0 140 140" class="score-ring">
+            <circle cx="70" cy="70" r="60" class="score-ring__track"/>
+            <circle cx="70" cy="70" r="60" class="score-ring__value is-warning" style="stroke-dasharray: 377; stroke-dashoffset: 132;"/>
+          </svg>
+          <div class="score-ring__label sample-report__score-label">
+            <span class="score-ring__num">64</span>
+            <span class="score-ring__den">/100</span>
+          </div>
+        </div>
+
+        <div class="sample-report__details">
+          <p class="sample-report__eyebrow">Example audit — sample-shop.com</p>
+          <ul class="sample-report__categories">
+            <li><span>SEO</span><strong class="is-warning">58</strong></li>
+            <li><span>Performance</span><strong class="is-critical">41</strong></li>
+            <li><span>Mobile</span><strong class="is-good">92</strong></li>
+            <li><span>Accessibility</span><strong class="is-warning">70</strong></li>
+            <li><span>Content</span><strong class="is-good">81</strong></li>
+            <li><span>Conversion</span><strong class="is-critical">45</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sample-report__findings">
+        <div class="finding-preview finding-preview--critical">
+          <span class="severity-badge severity-badge--critical">Critical</span>
+          <p>The homepage takes 4.8s to load on mobile — most visitors leave before it finishes.</p>
+        </div>
+        <div class="finding-preview finding-preview--warning">
+          <span class="severity-badge severity-badge--warning">Warning</span>
+          <p>No clear call-to-action above the fold — visitors don't know what to do next.</p>
+        </div>
+        <div class="finding-preview finding-preview--good">
+          <span class="severity-badge severity-badge--good">Good</span>
+          <p>Mobile viewport and text sizing are both configured correctly.</p>
+        </div>
+      </div>
+
+      <p class="section-cta">
+        <a href="#audit-form" class="btn btn-primary">Get my free audit</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- BEFORE / AFTER -->
+  <section class="section">
+    <div class="shell">
+      <div class="section-head">
+        <h2>Not just "what's wrong" — what to change it to</h2>
+        <p>Every issue comes with a specific rewrite you can copy, not just advice to "optimize your content."</p>
+      </div>
+
+      <div class="before-after-grid">
+        <div class="before-after-card">
+          <p class="before-after-card__label">Homepage title tag</p>
+          <div class="before-after-card__row before-after-card__row--before">
+            <span class="before-after-card__tag">Before</span>
+            <p>Home</p>
+          </div>
+          <div class="before-after-card__row before-after-card__row--after">
+            <span class="before-after-card__tag">After</span>
+            <p>Handmade Leather Bags &amp; Wallets | Free US Shipping — ExampleCraftCo</p>
+          </div>
+          <p class="before-after-card__why">Specific, descriptive, and tells both search engines and people scanning results what the page actually offers.</p>
+        </div>
+
+        <div class="before-after-card">
+          <p class="before-after-card__label">Call-to-action button</p>
+          <div class="before-after-card__row before-after-card__row--before">
+            <span class="before-after-card__tag">Before</span>
+            <p>Submit</p>
+          </div>
+          <div class="before-after-card__row before-after-card__row--after">
+            <span class="before-after-card__tag">After</span>
+            <p>Get My Free Quote</p>
+          </div>
+          <p class="before-after-card__why">Specific and benefit-driven button text is easier to act on than a generic form label.</p>
+        </div>
+      </div>
+      <p class="before-after-note">Illustrative example — the exact wording you get is generated from your own page's content.</p>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="section section--alt" id="benefits">
+    <div class="shell">
+      <div class="section-head">
+        <h2>What you actually get out of it</h2>
+        <p>Not a checklist of "SEO best practices" — a short list of what to change, in order of what matters most.</p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-row">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M10.5 3a7.5 7.5 0 1 0 4.65 13.4l4.72 4.72a1 1 0 0 0 1.42-1.42l-4.72-4.72A7.5 7.5 0 0 0 10.5 3Zm0 2a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11Z"/></svg>
+          </div>
+          <div class="feature-copy">
+            <h3>Stop guessing why visitors leave</h3>
+            <p>See the specific SEO, speed, usability and conversion issues driving people away — not a vague "improve UX" note.</p>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 19V5m0 14h16M8 15l3-4 3 2 4-6"/></svg>
+          </div>
+          <div class="feature-copy">
+            <h3>Fixes your developer can use today</h3>
+            <p>Every issue includes a specific rewrite or code snippet, not a link to a 40-minute video about "best practices."</p>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3 3 7v6c0 4.6 3.4 8.4 9 10 5.6-1.6 9-5.4 9-10V7l-9-4Z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div class="feature-copy">
+            <h3>Look more professional to clients</h3>
+            <p>Freelancers and agencies can hand over a clean, branded report instead of a screen-recorded walkthrough.</p>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 1 9 9 8.96 8.96 0 0 1-6-2.3M3 12l3-3M3 12l3 3"/><path d="M12 7v5l3.5 2"/></svg>
+          </div>
+          <div class="feature-copy">
+            <h3>Save the hours of manual digging</h3>
+            <p>What normally takes an afternoon of poking around dev tools and SEO plugins takes about a minute here.</p>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16v4H4zM4 10h10v4H4zM4 16h13v4H4z"/></svg>
+          </div>
+          <div class="feature-copy">
+            <h3>Know what to fix first</h3>
+            <p>Issues are ranked by severity, so you spend your time on the three things that matter, not a hundred that don't.</p>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
+          </div>
+          <div class="feature-copy">
+            <h3>Track it over time</h3>
+            <p>Every audit is saved, so you can see whether last month's fixes actually moved your score.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="how-it-works">
+    <div class="shell">
+      <div class="section-head">
+        <h2>From URL to fix list in three steps</h2>
+        <p>No install, no tracking code, no waiting on a consultant.</p>
+      </div>
+
+      <ol class="steps">
+        <li class="step">
+          <div class="step-index">1</div>
+          <div class="step-copy">
+            <h3>Paste your URL</h3>
+            <p>Drop in your homepage — SiteFix AI reads the page the way a visitor and a search engine both would.</p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-index">2</div>
+          <div class="step-copy">
+            <h3>Get your score and issues</h3>
+            <p>See your overall score, a breakdown by category, and the specific problems behind each one.</p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-index">3</div>
+          <div class="step-copy">
+            <h3>Copy the fixes in</h3>
+            <p>Each issue comes with a specific rewrite or snippet you review and paste in yourself — nothing changes on your site automatically.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- AUDIT CATEGORIES -->
+  <section class="section section--alt" id="categories">
+    <div class="shell">
+      <div class="section-head">
+        <h2>What SiteFix AI checks</h2>
+        <p>Four categories, one severity scale: critical, warning, and passed.</p>
+      </div>
+
+      <div class="category-list">
+        <div class="category">
+          <div class="category-head">
+            <span class="category-badge category-badge--seo">SEO</span>
+            <h3>Search visibility</h3>
+          </div>
+          <ul class="category-checks">
+            <li>Title tags, meta descriptions and heading structure</li>
+            <li>Indexability, robots rules and canonical tags</li>
+            <li>Structured data and Open Graph metadata</li>
+          </ul>
+        </div>
+
+        <div class="category">
+          <div class="category-head">
+            <span class="category-badge category-badge--perf">Performance</span>
+            <h3>Speed &amp; technical health</h3>
+          </div>
+          <ul class="category-checks">
+            <li>HTTPS, redirects and server response time</li>
+            <li>Page weight and load-time signals</li>
+            <li>Technical errors that quietly hurt rankings</li>
+          </ul>
+        </div>
+
+        <div class="category">
+          <div class="category-head">
+            <span class="category-badge category-badge--ux">UX</span>
+            <h3>Usability &amp; accessibility</h3>
+          </div>
+          <ul class="category-checks">
+            <li>Mobile viewport and responsive setup</li>
+            <li>Image alt text and form field labels</li>
+            <li>Navigation clarity and heading structure</li>
+          </ul>
+        </div>
+
+        <div class="category">
+          <div class="category-head">
+            <span class="category-badge category-badge--cvr">Conversion</span>
+            <h3>Turning visits into action</h3>
+          </div>
+          <ul class="category-checks">
+            <li>Call-to-action presence and clarity</li>
+            <li>Contact forms and reachability</li>
+            <li>Content depth and completeness</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section" id="pricing">
+    <div class="shell">
+      <div class="section-head">
+        <h2>Simple pricing, for every stage</h2>
+        <p>Start with a free audit. Upgrade when you're managing more than one site.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="price-card">
+          <h3>Free Audit</h3>
+          <p class="price-amount">$0</p>
+          <p class="price-period">no card required</p>
+          <ul class="price-features">
+            <li>Basic website audit</li>
+            <li>Overall score</li>
+            <li>Key issues</li>
+          </ul>
+          <a href="#audit-form" class="btn btn-ghost btn-block">Get my free audit</a>
+        </div>
+
+        <div class="price-card price-card--featured">
+          <p class="price-tag">Most popular</p>
+          <h3>Pro</h3>
+          <p class="price-amount price-amount--label">Coming soon</p>
+          <p class="price-period">for freelancers &amp; small teams</p>
+          <ul class="price-features">
+            <li>Full audit, every category</li>
+            <li>AI-written recommendations</li>
+            <li>AI-generated fixes for titles, copy &amp; more</li>
+            <li>Professional, print-ready report</li>
+          </ul>
+          <a href="#audit-form" class="btn btn-primary btn-block">Get started free</a>
+        </div>
+
+        <div class="price-card">
+          <h3>Business</h3>
+          <p class="price-amount price-amount--label">Coming soon</p>
+          <p class="price-period">for agencies &amp; multi-site owners</p>
+          <ul class="price-features">
+            <li>Multiple websites</li>
+            <li>Full audit history</li>
+            <li>Priority processing</li>
+          </ul>
+          <a href="#audit-form" class="btn btn-ghost btn-block">Get started free</a>
+        </div>
+      </div>
+
+      <p class="pricing-note">
+        SiteFix AI is in early access: every feature shown above — including Pro and Business features — is free to use right now while we finish billing. No credit card, no surprise charges.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section--alt" id="faq">
+    <div class="shell shell--narrow">
+      <div class="section-head">
+        <h2>Questions, answered</h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Do I need to install anything on my site?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>No. SiteFix AI scans your site the way a browser and a search engine would, from the outside. There's no tracking script or plugin to install.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>How long does an audit take?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Most audits finish in under a minute.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Will the AI actually change my website for me?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>No — and it never will without you doing it. SiteFix AI gives you specific, copy-ready suggestions for things like titles, headlines and calls to action. You review each one and paste it in yourself; nothing is ever changed on your live site automatically.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>What's the difference between Free, Pro and Business?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Free Audit gives you a score and your key issues. Pro adds the full issue list, AI-written recommendations, AI-generated fixes and a professional report. Business is for agencies and multi-site owners who need audit history and priority processing across several sites.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Is this really free right now?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. SiteFix AI is in early access and billing isn't live yet, so every feature on this page is free to use today, including the ones listed under Pro and Business. No credit card required.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="cta-band">
+    <div class="shell cta-band__inner">
+      <h2>See what's actually wrong with your site.</h2>
+      <p>Run your first audit free — no signup, no credit card, results in about a minute.</p>
+      <a href="#top" class="btn btn-primary btn-large">Get my free audit</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-inner">
+    <div class="footer-brand">
+      <a class="brand" href="index.html">
+        <span class="brand-name">SiteFix<span class="brand-accent">AI</span></span>
+      </a>
+      <p>Website audits that find what's broken and tell you exactly how to fix it.</p>
+    </div>
+
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#benefits">Benefits</a>
+        <a href="#sample-report">Sample audit</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#faq">FAQ</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="scan.html">Sample scan</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy policy</a>
+        <a href="#">Terms of service</a>
+      </div>
+    </div>
+  </div>
+  <div class="shell footer-bottom">
+    <p>&copy; 2026 SiteFix AI. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>

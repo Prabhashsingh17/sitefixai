@@ -1,0 +1,19 @@
+{
+  "name": "sitefix-ai",
+  "version": "0.1.0",
+  "description": "SiteFix AI — AI-powered website audit and improvement tool (MVP).",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js",
+    "test": "node --test \"tests/**/*.test.js\""
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "cheerio": "^1.0.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}

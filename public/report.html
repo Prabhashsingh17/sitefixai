@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit Report — SiteFix AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header no-print">
+  <div class="shell header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="26" height="26">
+          <path d="M16 3 L28 9 V17 C28 23.5 22.6 28.4 16 30 C9.4 28.4 4 23.5 4 17 V9 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M11 16.5 L14.5 20 L21.5 12.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="brand-name">SiteFix<span class="brand-accent">AI</span></span>
+    </a>
+    <div class="header-actions">
+      <a class="btn btn-ghost" href="dashboard.html">Dashboard</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="report-page">
+    <div class="shell shell--report">
+
+      <!-- LOADING STATE -->
+      <section class="placeholder-page no-print" id="reportLoading">
+        <div class="placeholder-card">
+          <span class="status-pill"><span class="dot"></span> Loading</span>
+          <h1>Preparing your report</h1>
+          <p id="reportLoadingText" role="status" aria-live="polite">Fetching your audit…</p>
+        </div>
+      </section>
+
+      <!-- EMPTY STATE (no scanId in the URL) -->
+      <section class="placeholder-page no-print" id="reportEmpty" hidden>
+        <div class="placeholder-card">
+          <span class="status-pill"><span class="dot"></span> No audit selected</span>
+          <h1>No report to show yet</h1>
+          <p>Run a free audit from the homepage, then generate a report from your dashboard.</p>
+          <a class="btn btn-primary" href="index.html">Run a free audit</a>
+        </div>
+      </section>
+
+      <!-- ERROR STATE -->
+      <section class="placeholder-page no-print" id="reportError" hidden>
+        <div class="placeholder-card">
+          <span class="status-pill status-pill--error"><span class="dot"></span> Something went wrong</span>
+          <h1 id="reportErrorTitle">We couldn't load this report</h1>
+          <p id="reportErrorMessage" role="alert">An unexpected error occurred.</p>
+          <div class="placeholder-card__actions">
+            <button class="btn btn-ghost" id="reportRetryBtn" type="button">Try again</button>
+            <a class="btn btn-primary" href="index.html">Run a new audit</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAIN REPORT CONTENT -->
+      <div id="reportContent" hidden>
+
+        <!-- Action bar (never printed) -->
+        <div class="report-actionbar no-print">
+          <a class="report-actionbar__back" id="backToDashboardLink" href="dashboard.html">&larr; Back to dashboard</a>
+          <button class="btn btn-primary" id="printReportBtn" type="button">Download / Print Report</button>
+        </div>
+
+        <!-- Printable report document -->
+        <article class="report-doc" id="reportDoc">
+
+          <!-- Report header / branding -->
+          <header class="report-doc__header">
+            <div class="report-brand">
+              <span class="report-brand__mark" aria-hidden="true">
+                <svg viewBox="0 0 32 32" width="30" height="30">
+                  <path d="M16 3 L28 9 V17 C28 23.5 22.6 28.4 16 30 C9.4 28.4 4 23.5 4 17 V9 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                  <path d="M11 16.5 L14.5 20 L21.5 12.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="report-brand__name">SiteFix<span class="report-brand__accent">AI</span></span>
+            </div>
+            <h1 class="report-doc__title">Website Audit Report</h1>
+            <dl class="report-meta">
+              <div>
+                <dt>Website audited</dt>
+                <dd id="reportUrl">—</dd>
+              </div>
+              <div>
+                <dt>Audit date</dt>
+                <dd id="reportAuditDate">—</dd>
+              </div>
+              <div>
+                <dt>Report generated</dt>
+                <dd id="reportGeneratedDate">—</dd>
+              </div>
+            </dl>
+          </header>
+
+          <!-- Overall score + category scores -->
+          <section class="report-section report-score-section">
+            <div class="report-overall-score">
+              <svg viewBox="0 0 160 160" class="score-ring report-score-ring" id="reportScoreRingSvg">
+                <circle cx="80" cy="80" r="70" class="score-ring__track"/>
+                <circle cx="80" cy="80" r="70" class="score-ring__value" id="reportScoreRingValue"/>
+              </svg>
+              <div class="score-ring__label">
+                <span class="score-ring__num" id="reportOverallScoreNum">–</span>
+                <span class="score-ring__den">/100</span>
+              </div>
+              <p class="report-overall-score__caption">Overall Score</p>
+            </div>
+
+            <div class="report-category-scores">
+              <h2 class="report-section__title">Scores by category</h2>
+              <table class="report-table report-category-table">
+                <thead>
+                  <tr><th>Category</th><th>Score</th></tr>
+                </thead>
+                <tbody id="reportCategoryTableBody"><!-- populated by report.js --></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Executive summary -->
+          <section class="report-section" id="reportSummarySection">
+            <h2 class="report-section__title">Executive Summary</h2>
+            <p class="report-ai-label" id="reportSummaryLabel"></p>
+            <p class="report-body-text" id="reportSummaryText">—</p>
+          </section>
+
+          <!-- Critical issues -->
+          <section class="report-section" id="reportCriticalSection">
+            <h2 class="report-section__title">Critical Issues</h2>
+            <p class="report-empty-note" id="reportCriticalEmpty" hidden>No critical issues were detected.</p>
+            <div class="report-findings" id="reportCriticalList"><!-- populated by report.js --></div>
+          </section>
+
+          <!-- Warnings -->
+          <section class="report-section" id="reportWarningsSection">
+            <h2 class="report-section__title">Warnings</h2>
+            <p class="report-empty-note" id="reportWarningsEmpty" hidden>No warnings were detected.</p>
+            <div class="report-findings" id="reportWarningsList"><!-- populated by report.js --></div>
+          </section>
+
+          <!-- Recommendations (consolidated checklist from every non-passing check) -->
+          <section class="report-section" id="reportRecommendationsSection">
+            <h2 class="report-section__title">Recommendations</h2>
+            <p class="report-section__intro">A consolidated checklist of every detected fix, from the deterministic audit.</p>
+            <p class="report-empty-note" id="reportRecommendationsEmpty" hidden>No further recommendations — every check passed.</p>
+            <ol class="report-recommendation-list" id="reportRecommendationsList"><!-- populated by report.js --></ol>
+          </section>
+
+          <!-- AI fixes -->
+          <section class="report-section" id="reportAiFixesSection">
+            <h2 class="report-section__title">AI Fixes</h2>
+            <p class="report-ai-label" id="reportAiFixesLabel"></p>
+            <div class="report-ai-fixes" id="reportAiFixesList"><!-- populated by report.js --></div>
+          </section>
+
+          <!-- Top 5 priorities -->
+          <section class="report-section" id="reportTopPrioritiesSection">
+            <h2 class="report-section__title">Top 5 Priorities</h2>
+            <p class="report-ai-label" id="reportTopPrioritiesLabel"></p>
+            <ol class="report-priority-list" id="reportTopPrioritiesList"><!-- populated by report.js --></ol>
+          </section>
+
+          <!-- Quick wins -->
+          <section class="report-section" id="reportQuickWinsSection">
+            <h2 class="report-section__title">Quick Wins</h2>
+            <p class="report-ai-label" id="reportQuickWinsLabel"></p>
+            <ul class="report-quickwin-list" id="reportQuickWinsList"><!-- populated by report.js --></ul>
+          </section>
+
+          <!-- Footer -->
+          <footer class="report-doc__footer">
+            <p id="reportDisclaimerText">This report reflects only automated, machine-detected data about the audited page at the time of the scan.</p>
+            <p class="report-doc__footer-brand">Generated by SiteFix AI &mdash; <span id="reportFooterUrl">—</span></p>
+          </footer>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/report.js"></script>
+</body>
+</html>
