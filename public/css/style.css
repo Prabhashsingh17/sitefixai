@@ -1062,6 +1062,109 @@ img { max-width: 100%; display: block; }
   font-size: 1.2rem;
   margin-bottom: 18px;
 }
+.dash-section__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.dash-section__head .dash-section__heading { margin-bottom: 0; }
+
+/* ---- AI Suggestions ("how to improve your site") --------------------------- */
+.badge-ai {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.72rem;
+  color: var(--accent-strong);
+  background: rgba(18, 184, 166, 0.1);
+  border: 1px solid rgba(18, 184, 166, 0.3);
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+.ai-suggestions {
+  background: var(--paper-raised);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+}
+.ai-suggestions__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 30px 12px;
+  text-align: center;
+  color: var(--slate-500);
+}
+.ai-suggestions__state--muted p { max-width: 60ch; }
+.ai-suggestions__summary {
+  color: var(--slate-700);
+  font-size: 1rem;
+  max-width: 78ch;
+  margin-bottom: 24px;
+}
+.ai-suggestions__columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+.ai-suggestions__col h3 {
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+}
+.ai-suggestions__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ai-suggestions__list li {
+  font-size: 0.92rem;
+  color: var(--slate-700);
+  line-height: 1.5;
+}
+.ai-suggestions__list li strong { color: var(--slate-900); }
+/* The global reset strips list-style/padding from every ol/ul -- restore it
+   here since these two lists are meant to read as an ordered priority list
+   and a bulleted list, not plain unmarked paragraphs. */
+ol.ai-suggestions__list {
+  counter-reset: ai-priority;
+  padding-left: 0;
+}
+ol.ai-suggestions__list li {
+  counter-increment: ai-priority;
+  padding-left: 26px;
+  position: relative;
+}
+ol.ai-suggestions__list li::before {
+  content: counter(ai-priority) '.';
+  position: absolute;
+  left: 0;
+  font-weight: 700;
+  color: var(--accent-strong);
+}
+ul.ai-suggestions__list li {
+  padding-left: 18px;
+  position: relative;
+}
+ul.ai-suggestions__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-strong);
+}
+.ai-suggestions__disclaimer {
+  margin-top: 24px;
+  font-size: 0.78rem;
+  color: var(--slate-500);
+}
+@media (max-width: 760px) {
+  .ai-suggestions { padding: 22px 20px; }
+  .ai-suggestions__columns { grid-template-columns: 1fr; gap: 24px; }
+}
 
 /* ---- Category score cards --------------------------------------------------- */
 .dash-categories {

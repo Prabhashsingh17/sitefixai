@@ -96,10 +96,7 @@
           </div>
 
           <div class="dash-hero__summary">
-            <p class="dash-hero__eyebrow">
-              Summary
-              <span class="badge-soon">AI-generated insights coming soon</span>
-            </p>
+            <p class="dash-hero__eyebrow">Summary</p>
             <p class="dash-hero__text" id="dashSummaryText">—</p>
 
             <div class="dash-hero__stats">
@@ -120,6 +117,41 @@
                 <span>Passed</span>
               </div>
             </div>
+          </div>
+        </section>
+
+        <!-- AI Suggestions -- "how to improve your site" overview, generated
+             from the real audit data above via POST /api/audit/analyze. -->
+        <section class="dash-section ai-suggestions" id="aiSuggestionsSection">
+          <div class="dash-section__head">
+            <h2 class="dash-section__heading">How to improve your site</h2>
+            <span class="badge-ai">AI-generated</span>
+          </div>
+
+          <div class="ai-suggestions__state" id="aiSuggestionsLoading">
+            <span class="fix-spinner" aria-hidden="true"></span>
+            <p>Generating AI-powered suggestions for this site…</p>
+          </div>
+
+          <div class="ai-suggestions__state ai-suggestions__state--muted" id="aiSuggestionsUnavailable" hidden>
+            <p id="aiSuggestionsUnavailableText">AI suggestions are unavailable right now.</p>
+          </div>
+
+          <div class="ai-suggestions__body" id="aiSuggestionsBody" hidden>
+            <p class="ai-suggestions__summary" id="aiSuggestionsSummary">—</p>
+
+            <div class="ai-suggestions__columns">
+              <div class="ai-suggestions__col">
+                <h3>Top priorities</h3>
+                <ol class="ai-suggestions__list" id="aiTopPrioritiesList"><!-- populated by dashboard.js --></ol>
+              </div>
+              <div class="ai-suggestions__col">
+                <h3>Quick wins</h3>
+                <ul class="ai-suggestions__list" id="aiQuickWinsList"><!-- populated by dashboard.js --></ul>
+              </div>
+            </div>
+
+            <p class="ai-suggestions__disclaimer" id="aiSuggestionsDisclaimer"></p>
           </div>
         </section>
 
