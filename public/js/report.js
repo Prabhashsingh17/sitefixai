@@ -419,7 +419,16 @@
           aiError = analysisResult.error;
         }
 
-        renderReport(record, analysis, aiError);
+        try {
+          renderReport(record, analysis, aiError);
+        } catch (renderErr) {
+          console.error('Failed to render report:', renderErr);
+          showError(
+            "We couldn't display this report",
+            'The audit data for this scan was in an unexpected format. Please try running a new audit.'
+          );
+          return;
+        }
         showOnly(els.content);
         return;
       }

@@ -26,6 +26,7 @@ function rowToRecord(row) {
 
   return {
     scanId: row.scan_id,
+    userId: row.user_id || null,
     url: row.url,
     status: row.status,
     createdAt: row.created_at,
@@ -44,15 +45,15 @@ function rowToRecord(row) {
   };
 }
 
-function createScan(url) {
+function createScan(url, userId = null) {
   const db = getDb();
   const scanId = crypto.randomUUID();
   const createdAt = new Date().toISOString();
 
   db.prepare(
-    `INSERT INTO scans (scan_id, url, status, created_at)
-     VALUES (@scanId, @url, 'pending', @createdAt)`
-  ).run({ scanId, url, createdAt });
+    `INSERT INTO scans (scan_id, url, status, created_at, user_id)
+     VALUES (@scanId, @url, 'pending', @createdAt, @userId)`
+  ).run({ scanId, url, createdAt, userId });
 
   return getScan(scanId);
 }
@@ -135,4 +136,33 @@ function listRecent(limit = DEFAULT_HISTORY_LIMIT) {
   }));
 }
 
-module.exports = { createScan, getScan, updateScan, listRecent };
+/**
+ * Same shape as listRecent(), scoped to one user's own scans -- used for the
+ * "Recent Audits" panel once a visitor is logged in.
+ */
+function listRecentForUser(userId, limit = DEFAULT_HISTORY_LIMIT) {
+  const db = getDb();
+  const safeLimit = Math.max(1, Math.min(MAX_HISTORY_LIMIT, Number(limit) || DEFAULT_HISTORY_LIMIT));
+
+  const rows = db
+    .prepare(
+      `SELECT scan_id, url, status, created_at, completed_at, overall_score, error
+       FROM scans
+       WHERE user_id = ?
+       ORDER BY created_at DESC
+       LIMIT ?`
+    )
+    .all(userId, safeLimit);
+
+  return rows.map((row) => ({
+    scanId: row.scan_id,
+    url: row.url,
+    status: row.status,
+    createdAt: row.created_at,
+    completedAt: row.completed_at,
+    overallScore: row.overall_score,
+    error: row.error,
+  }));
+}
+
+module.exports = { createScan, getScan, updateScan, listRecent, listRecentForUser };

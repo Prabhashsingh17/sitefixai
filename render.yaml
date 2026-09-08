@@ -12,6 +12,12 @@
 # data is wiped on every deploy/restart. The service URL itself is
 # permanent; if you need the audit history to survive redeploys, add a
 # paid persistent disk (https://render.com/docs/disks) mounted at ./data.
+#
+# User accounts are NOT affected by the above -- they live in Postgres
+# (DATABASE_URL, e.g. a free https://neon.tech project) whenever that's
+# configured, specifically so they survive every deploy. Set DATABASE_URL
+# and NODE_ENV=production below in the Render dashboard's Environment tab
+# for this service.
 services:
   - type: web
     name: sitefix-ai
@@ -30,4 +36,8 @@ services:
       - key: ANTHROPIC_ADMIN_KEY
         sync: false
       - key: ANTHROPIC_API_KEY_ID
+        sync: false
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
         sync: false

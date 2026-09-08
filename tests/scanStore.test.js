@@ -58,6 +58,17 @@ test('createScan gives each scan a distinct scanId', () => {
   assert.notEqual(a.scanId, b.scanId);
 });
 
+test('createScan defaults userId to null for anonymous scans', () => {
+  const rec = scanStore.createScan('https://example.com/');
+  assert.equal(rec.userId, null);
+});
+
+test('createScan associates a scan with the given userId, and getScan preserves it', () => {
+  const rec = scanStore.createScan('https://example.com/', 'user-123');
+  assert.equal(rec.userId, 'user-123');
+  assert.equal(scanStore.getScan(rec.scanId).userId, 'user-123');
+});
+
 // =============================================================================
 // getScan
 // =============================================================================
@@ -203,6 +214,24 @@ test('listRecent includes in-progress and failed scans alongside completed ones'
 });
 
 // =============================================================================
+// listRecentForUser
+// =============================================================================
+test('listRecentForUser only returns scans belonging to that user', () => {
+  scanStore.createScan('https://anon.example/'); // anonymous, userId null
+  scanStore.createScan('https://other-user.example/', 'user-b');
+  const mine = scanStore.createScan('https://mine.example/', 'user-a');
+
+  const history = scanStore.listRecentForUser('user-a', 10);
+  assert.equal(history.length, 1);
+  assert.equal(history[0].scanId, mine.scanId);
+});
+
+test('listRecentForUser returns an empty array for a user with no scans', () => {
+  scanStore.createScan('https://someone-elses.example/', 'user-b');
+  assert.deepEqual(scanStore.listRecentForUser('user-with-no-scans', 10), []);
+});
+
+// =============================================================================
 // Isolation between distinct scans
 // =============================================================================
 test('two scans do not interfere with each other', () => {
@@ -264,6 +293,9 @@ test('db/index.js resolves the sqlite repository by default and exposes all four
   assert.equal(typeof repo.getScan, 'function');
   assert.equal(typeof repo.updateScan, 'function');
   assert.equal(typeof repo.listRecent, 'function');
+  assert.equal(typeof repo.listRecentForUser, 'function');
+  assert.equal(typeof repo.users.createUser, 'function');
+  assert.equal(typeof repo.sessions.createSession, 'function');
 });
 
 test('db/index.js throws a clear error for an unsupported DB_DRIVER', () => {

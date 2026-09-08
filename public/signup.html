@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign up — SiteFix AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="26" height="26">
+          <path d="M16 3 L28 9 V17 C28 23.5 22.6 28.4 16 30 C9.4 28.4 4 23.5 4 17 V9 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M11 16.5 L14.5 20 L21.5 12.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="brand-name">SiteFix<span class="brand-accent">AI</span></span>
+    </a>
+    <div class="header-actions">
+      <a class="btn btn-ghost" href="index.html">Home</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="scan-page">
+    <div class="shell shell--narrow">
+      <section class="scan-card auth-card">
+        <h1>Create your account</h1>
+        <p class="scan-sub">Save your audit history and pick up where you left off.</p>
+
+        <form class="auth-form" id="authForm" novalidate>
+          <div class="auth-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+          </div>
+          <div class="auth-field">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" autocomplete="new-password" minlength="8" required>
+            <p class="field-hint">At least 8 characters.</p>
+          </div>
+
+          <p class="auth-error" id="authError" role="alert" hidden></p>
+
+          <button type="submit" class="btn btn-primary btn-block" id="authSubmit">Sign up</button>
+        </form>
+
+        <p class="auth-switch">Already have an account? <a href="login.html">Log in</a></p>
+      </section>
+    </div>
+  </div>
+</main>
+
+<script src="js/signup.js"></script>
+</body>
+</html>

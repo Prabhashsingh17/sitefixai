@@ -51,7 +51,49 @@ const SCHEMA = `
   );
 
   CREATE INDEX IF NOT EXISTS idx_scans_created_at ON scans(created_at DESC);
+
+  CREATE TABLE IF NOT EXISTS users (
+    user_id             TEXT PRIMARY KEY,
+    email               TEXT NOT NULL UNIQUE COLLATE NOCASE,
+    password_hash       TEXT NOT NULL,
+    created_at          TEXT NOT NULL,
+    last_login_at       TEXT
+  );
+
+  CREATE TABLE IF NOT EXISTS sessions (
+    session_id          TEXT PRIMARY KEY,
+    user_id             TEXT NOT NULL REFERENCES users(user_id),
+    created_at          TEXT NOT NULL,
+    expires_at          TEXT NOT NULL
+  );
+
+  CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
+  CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions(expires_at);
 `;
+
+/**
+ * `scans.user_id` was added after the table already shipped in production,
+ * so it can't just live in the CREATE TABLE above (IF NOT EXISTS won't
+ * retroactively add a column to an existing table). SQLite has no
+ * `ADD COLUMN IF NOT EXISTS`, so this runs the ALTER and swallows the one
+ * expected failure (the column already existing) rather than adding a
+ * migration framework for a single column.
+ *
+ * Deliberately NOT a `REFERENCES users(user_id)` foreign key: when
+ * DATABASE_URL is set, real users live in Postgres while scans stay here in
+ * SQLite (see db/index.js) -- a cross-database foreign key can't be
+ * enforced, and this local `users` table would then be an unused fallback,
+ * not where the referenced row actually lives. This column is an
+ * application-level reference only.
+ */
+function ensureScansUserIdColumn(db) {
+  try {
+    db.exec('ALTER TABLE scans ADD COLUMN user_id TEXT');
+  } catch (err) {
+    if (!/duplicate column/i.test(err.message)) throw err;
+  }
+  db.exec('CREATE INDEX IF NOT EXISTS idx_scans_user_id ON scans(user_id)');
+}
 
 let cachedDb = null;
 let cachedDbPath = null;
@@ -75,6 +117,7 @@ function getDb() {
   cachedDb = new Database(dbPath);
   cachedDb.pragma('journal_mode = WAL');
   cachedDb.exec(SCHEMA);
+  ensureScansUserIdColumn(cachedDb);
   cachedDbPath = dbPath;
   return cachedDb;
 }

@@ -578,7 +578,16 @@
           );
           return;
         }
-        renderDashboard(record);
+        try {
+          renderDashboard(record);
+        } catch (renderErr) {
+          console.error('Failed to render dashboard:', renderErr);
+          showError(
+            "We couldn't display this audit",
+            'The audit data for this scan was in an unexpected format. Please try running a new audit.'
+          );
+          return;
+        }
         return;
       }
 

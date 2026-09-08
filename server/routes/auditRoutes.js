@@ -118,7 +118,7 @@ router.post('/scan', scanRateLimiter, async (req, res) => {
     });
   }
 
-  const record = scanStore.createScan(trimmedUrl);
+  const record = scanStore.createScan(trimmedUrl, req.user ? req.user.userId : null);
   scanStore.updateScan(record.scanId, { status: 'in_progress' });
 
   try {
@@ -237,7 +237,10 @@ router.get('/history', (req, res) => {
   const rawLimit = Number(req.query.limit);
   const limit = Number.isFinite(rawLimit) ? rawLimit : undefined;
 
-  const history = scanStore.listRecent(limit);
+  // Logged-in visitors see their own saved history; anonymous visitors get
+  // an empty list rather than everyone else's scans (their scans were never
+  // tied to an account, so there's nothing "theirs" to show).
+  const history = req.user ? scanStore.listRecentForUser(req.user.userId, limit) : [];
 
   return res.status(200).json({
     success: true,

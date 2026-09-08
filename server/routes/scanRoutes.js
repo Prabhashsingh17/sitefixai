@@ -39,7 +39,7 @@ router.post('/scan', scanRateLimiter, (req, res) => {
     });
   }
 
-  const record = scanStore.createScan(trimmedUrl);
+  const record = scanStore.createScan(trimmedUrl, req.user ? req.user.userId : null);
 
   // Fire off the scan. This does not block the response — the frontend
   // polls GET /api/scan/:scanId (or just shows its own progress UI) rather

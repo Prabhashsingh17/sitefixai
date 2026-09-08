@@ -746,6 +746,31 @@ img { max-width: 100%; display: block; }
   box-shadow: 0 30px 70px -46px rgba(11, 18, 32, 0.35);
 }
 
+/* ---- Auth (login/signup) ---------------------------------------------------- */
+.auth-card h1 { margin-bottom: 8px; }
+.auth-form { margin-top: 28px; display: flex; flex-direction: column; gap: 18px; }
+.auth-field { display: flex; flex-direction: column; gap: 6px; }
+.auth-field label { font-size: 0.86rem; font-weight: 600; color: var(--slate-700); }
+.auth-field input {
+  padding: 12px 14px;
+  border: 1px solid var(--slate-300);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--slate-900);
+  background: var(--paper-raised);
+}
+.auth-field input:focus { outline: none; border-color: var(--accent); }
+.auth-field input[aria-invalid="true"] { border-color: var(--critical); }
+.auth-error {
+  color: var(--critical);
+  font-size: 0.88rem;
+  margin: 0;
+}
+.auth-switch { margin-top: 22px; font-size: 0.92rem; color: var(--slate-500); }
+.auth-switch a { color: var(--accent-strong); font-weight: 600; }
+.auth-switch a:hover { text-decoration: underline; }
+
 .scan-eyebrow {
   display: inline-flex;
   align-items: center;

@@ -10,11 +10,21 @@
  * needs to change.
  *
  * Selected via DB_DRIVER (see .env.example). Defaults to 'sqlite', the only
- * driver implemented in this MVP.
+ * driver implemented for SCANS in this MVP.
+ *
+ * Users/sessions (server/services/userStore.js, sessionStore.js) are a
+ * separate concern with their own driver choice: they use Postgres whenever
+ * DATABASE_URL is configured (see server/services/db/postgresConnection.js),
+ * falling back to SQLite otherwise -- this keeps every existing test working
+ * unmodified (they never set DATABASE_URL, so they keep getting SQLite
+ * ':memory:' exactly like scans already do) while letting production store
+ * accounts in a real, persistent Postgres database instead of Render's
+ * ephemeral disk. Scans stay on SQLite either way for now -- see the plan
+ * this was built from for why that split is deliberate, not an oversight.
  * ---------------------------------------------------------------------------
  */
 
-function loadRepository() {
+function loadScanRepository() {
   const driver = (process.env.DB_DRIVER || 'sqlite').toLowerCase();
 
   switch (driver) {
@@ -32,4 +42,22 @@ function loadRepository() {
   }
 }
 
-module.exports = loadRepository();
+function loadAuthRepositories() {
+  if (process.env.DATABASE_URL) {
+    return {
+      users: require('./postgresUserRepository'),
+      sessions: require('./postgresSessionRepository'),
+    };
+  }
+  return {
+    users: require('./sqliteUserRepository'),
+    sessions: require('./sqliteSessionRepository'),
+  };
+}
+
+const repository = loadScanRepository();
+const { users, sessions } = loadAuthRepositories();
+
+module.exports = repository;
+module.exports.users = users;
+module.exports.sessions = sessions;

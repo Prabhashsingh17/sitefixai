@@ -18,6 +18,8 @@ const scanRoutes = require('./routes/scanRoutes');
 const auditRoutes = require('./routes/auditRoutes');
 const fixRoutes = require('./routes/fixRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const authRoutes = require('./routes/authRoutes');
+const { sessionMiddleware } = require('./middleware/session');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -43,6 +45,11 @@ app.set('query parser', 'simple');
 // than a URL string, so this also limits abuse of the JSON body parser.
 app.use(express.json({ limit: '100kb' }));
 
+// Populates req.user from the session cookie (or null for anonymous
+// visitors) on every request. Fail-open -- never blocks a request; see
+// middleware/session.js for why that matters.
+app.use(sessionMiddleware);
+
 // Static frontend
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 app.use(express.static(PUBLIC_DIR));
@@ -52,6 +59,7 @@ app.use('/api', scanRoutes);
 app.use('/api/audit', auditRoutes);
 app.use('/api/fix', fixRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/auth', authRoutes);
 
 // Basic health check — genuinely reflects server status, nothing more.
 app.get('/api/health', (req, res) => {

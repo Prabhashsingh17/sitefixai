@@ -10,6 +10,7 @@
  * ScanRecord shape (unchanged from the original in-memory version):
  *   {
  *     scanId:      string,
+ *     userId:      string | null (the account that ran this scan, if any -- see server/services/userStore.js),
  *     url:         string,
  *     status:      'pending' | 'in_progress' | 'complete' | 'failed',
  *     createdAt:   string (ISO timestamp),
@@ -30,8 +31,8 @@
 
 const repository = require('./db');
 
-function createScan(url) {
-  return repository.createScan(url);
+function createScan(url, userId = null) {
+  return repository.createScan(url, userId);
 }
 
 function getScan(scanId) {
@@ -50,9 +51,19 @@ function listRecent(limit) {
   return repository.listRecent(limit);
 }
 
+/**
+ * @param {string} userId
+ * @param {number} [limit=20]
+ * @returns {Array<{scanId, url, status, createdAt, completedAt, overallScore, error}>}
+ */
+function listRecentForUser(userId, limit) {
+  return repository.listRecentForUser(userId, limit);
+}
+
 module.exports = {
   createScan,
   getScan,
   updateScan,
   listRecent,
+  listRecentForUser,
 };
