@@ -38,6 +38,16 @@
    Reset & base
    ============================================================================= */
 *, *::before, *::after { box-sizing: border-box; }
+
+/* The browser's built-in [hidden] rule only wins the cascade against other
+   UA styles -- any author rule that sets `display` on the same element
+   (e.g. `.fix-state { display: flex }`) silently overrides it, leaving the
+   element visible despite `hidden` being set. Every state toggle in this
+   app (dashboard.js/report.js/scan.js `showOnly()`, the fix modal's
+   loading/error/result panels, etc.) relies on the `hidden` attribute
+   actually hiding things, so this must always win. */
+[hidden] { display: none !important; }
+
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
