@@ -10,6 +10,9 @@
   },
   "license": "UNLICENSED",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "better-sqlite3": "^13.0.3",
     "cheerio": "^1.0.0",

@@ -1,0 +1,33 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+#
+# Deploy: in the Render dashboard, "New +" -> "Blueprint", connect this repo.
+# Render reads this file and creates the web service below automatically.
+#
+# Env vars marked `sync: false` are secrets Render will prompt you to fill
+# in yourself (dashboard -> service -> Environment) — they are never
+# committed to this repo (see .env.example for what each one does).
+#
+# Note on persistence: this app stores audit history in a local SQLite file
+# (data/sitefix.db). Render's free tier has an ephemeral filesystem, so that
+# data is wiped on every deploy/restart. The service URL itself is
+# permanent; if you need the audit history to survive redeploys, add a
+# paid persistent disk (https://render.com/docs/disks) mounted at ./data.
+services:
+  - type: web
+    name: sitefix-ai
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.0
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: ANTHROPIC_MODEL
+        sync: false
+      - key: ANTHROPIC_ADMIN_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY_ID
+        sync: false
