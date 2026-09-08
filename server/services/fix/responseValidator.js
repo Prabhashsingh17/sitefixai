@@ -12,8 +12,38 @@ const { parseJson } = require('../ai/jsonUtils');
 const { AIValidationError } = require('../ai/errors');
 const { FIX_TYPES } = require('./promptBuilder');
 
-const GUARANTEE_LANGUAGE_PATTERN =
-  /\bguarantee(d|s)?\b|\b100%\s*(increase|improvement|guaranteed)\b|\bwill\s+(definitely|certainly)\b|#\s*1\s*(ranking|position|spot)|\brank(ing)?\s+(number\s*1|first)\b/i;
+// Affirmative overpromise patterns -- these are unsafe in any context, so a
+// direct match is fine (nobody writes a safe, hedged version of "#1 ranking").
+const AFFIRMATIVE_OVERPROMISE_PATTERN =
+  /\b100%\s*(increase|improvement|guaranteed)\b|\bwill\s+(definitely|certainly)\b|#\s*1\s*(ranking|position|spot)|\brank(ing)?\s+(number\s*1|first)\b/i;
+
+const GUARANTEE_WORD_PATTERN = /\bguarantee(d|s)?\b/i;
+
+// The prompt explicitly instructs the model to use "cautious, non-absolute
+// language" and to never claim a guaranteed outcome -- which means a
+// well-behaved response is likely to contain an honest hedge like "this
+// won't guarantee higher rankings" or "there's no guarantee this will help".
+// A bare word match on "guarantee" can't tell that apart from an actual
+// overpromise ("this is guaranteed to rank #1"), so only the negated form is
+// safe to reject on sight; a sentence containing "guarantee" alongside one of
+// these negation cues is a disclaimer, not an overpromise.
+const NEGATION_CUE_PATTERN =
+  /\b(no|not|never|won'?t|wont|isn'?t|isnt|doesn'?t|doesnt|don'?t|dont|cannot|can'?t|cant|without|wouldn'?t|wouldnt)\b/i;
+
+function splitIntoSentences(text) {
+  return text.split(/(?<=[.!?])\s+/);
+}
+
+/** True if `text` contains overpromise/guarantee language not covered by a hedge. */
+function hasUnsafeGuaranteeLanguage(text) {
+  if (!text) return false;
+  if (AFFIRMATIVE_OVERPROMISE_PATTERN.test(text)) return true;
+
+  return splitIntoSentences(text).some((sentence) => {
+    if (!GUARANTEE_WORD_PATTERN.test(sentence)) return false;
+    return !NEGATION_CUE_PATTERN.test(sentence);
+  });
+}
 
 const MAX_ORIGINAL_LEN = 500;
 const MAX_IMPROVED_LEN = 1200;
@@ -57,13 +87,13 @@ function parseAndValidateFix(rawText, requestedFixType, fallbackOriginal) {
 
   // Defense in depth: even though the prompt forbids it, never pass through
   // a suggestion that promises a guaranteed outcome.
-  if (GUARANTEE_LANGUAGE_PATTERN.test(improved) || GUARANTEE_LANGUAGE_PATTERN.test(reason)) {
+  if (hasUnsafeGuaranteeLanguage(improved) || hasUnsafeGuaranteeLanguage(reason)) {
     throw new AIValidationError('The AI fix service returned an unsafe suggestion. Please try regenerating.');
   }
 
   const alternatives = Array.isArray(parsed.alternatives)
     ? parsed.alternatives
-        .filter((a) => isNonEmptyString(a) && !GUARANTEE_LANGUAGE_PATTERN.test(a))
+        .filter((a) => isNonEmptyString(a) && !hasUnsafeGuaranteeLanguage(a))
         .slice(0, MAX_ALTERNATIVES)
         .map((a) => truncate(a.trim(), MAX_ALTERNATIVE_LEN))
     : [];

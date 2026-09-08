@@ -61,6 +61,39 @@ test('a suggestion promising a guaranteed outcome in "reason" is rejected entire
   );
 });
 
+test('an honest, hedged disclaimer using the word "guarantee" is NOT rejected', () => {
+  // The prompt explicitly asks the model for "cautious, non-absolute
+  // language" and to never guarantee an outcome -- a well-behaved response
+  // saying so (e.g. "won't guarantee", "no guarantee") must pass through,
+  // not be mistaken for the overpromise it's actually disclaiming.
+  const result = parseAndValidateFix(
+    JSON.stringify(
+      goodPayload({
+        reason: "This won't guarantee higher rankings, but a clearer title tends to improve click-through from search results.",
+      })
+    ),
+    'title',
+    ''
+  );
+  assert.ok(result.reason.includes("won't guarantee"));
+});
+
+test('"no guarantee" phrasing in "improved" is NOT rejected', () => {
+  const result = parseAndValidateFix(
+    JSON.stringify(goodPayload({ improved: 'There is no guarantee of a ranking boost, but this title is more descriptive.' })),
+    'title',
+    ''
+  );
+  assert.ok(result.improved.length > 0);
+});
+
+test('an unhedged guarantee claim is still rejected even without "#1"/"100%" wording', () => {
+  assert.throws(
+    () => parseAndValidateFix(JSON.stringify(goodPayload({ reason: 'This change is guaranteed to boost your rankings.' })), 'title', ''),
+    AIValidationError
+  );
+});
+
 test('individual alternatives containing guarantee language are filtered out, others kept', () => {
   const result = parseAndValidateFix(
     JSON.stringify(goodPayload({ alternatives: ['A safe alternative', 'This will guarantee first page ranking'] })),
