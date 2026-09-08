@@ -17,6 +17,7 @@ const express = require('express');
 const scanRoutes = require('./routes/scanRoutes');
 const auditRoutes = require('./routes/auditRoutes');
 const fixRoutes = require('./routes/fixRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -50,6 +51,7 @@ app.use(express.static(PUBLIC_DIR));
 app.use('/api', scanRoutes);
 app.use('/api/audit', auditRoutes);
 app.use('/api/fix', fixRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Basic health check — genuinely reflects server status, nothing more.
 app.get('/api/health', (req, res) => {
